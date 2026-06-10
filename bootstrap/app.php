@@ -56,6 +56,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // }
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Global Middleware
         $middleware->alias([
             'guest.api' => EnsureGuestJwt::class, // only for guest users
             'verified.api' => IsVerifyed::class, // is user verified

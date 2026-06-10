@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -7,7 +6,6 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class OTPMail extends Mailable
 {
@@ -19,8 +17,8 @@ class OTPMail extends Mailable
      */
     public function __construct($sub, $otp, $user)
     {
-        $this->sub = $sub;
-        $this->otp = $otp;
+        $this->sub  = $sub;
+        $this->otp  = $otp;
         $this->user = $user;
     }
 
@@ -43,7 +41,7 @@ class OTPMail extends Mailable
         return new Content(
             view: 'emails.otp',
             with: [
-                'otp' => $this->otp,
+                'otp'  => $this->otp,
                 'user' => $this->user,
             ],
         );

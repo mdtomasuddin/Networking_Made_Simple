@@ -9,6 +9,7 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    // Extend the default Tailwind CSS configuration
     theme: {
         extend: {
             fontFamily: {
@@ -17,5 +18,6 @@ export default {
         },
     },
 
+    // Add the forms plugin to the Tailwind CSS configuration
     plugins: [forms],
 };

@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Mail;
 
 class SendOTPEmail implements ShouldQueue
 {
-    use Queueable;
+    use Queueable; // Add the Queueable trait
 
+    // Define the properties to hold the user, OTP, and subject
     protected $user, $otp, $subject;
     /**
      * Create a new job instance.
@@ -33,8 +34,8 @@ class SendOTPEmail implements ShouldQueue
         try {
             // Log::info("Sending OTP email");
             Mail::to($this->user->email)->send(new OTPMail($this->subject, $this->otp, $this->user));
-        }catch(Exception $e) {
-            Log::error("OTP EMAIL Sending:".$e->getMessage());
+        } catch (Exception $e) {
+            Log::error("OTP EMAIL Sending:" . $e->getMessage());
             throw $e;
         }
     }
