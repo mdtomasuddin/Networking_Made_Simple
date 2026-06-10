@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Http\Controllers\Web\V1\Setting;
+namespace App\Http\Controllers\Web\V1\Settings;
 
 use App\Http\Requests\Web\V1\Setting\Mail\StoreRequest;
 use App\Services\Web\V1\Setting\MailService;
@@ -12,10 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class MailController
 {
+    // Mail Service
     private MailService $mailService;
 
     /**
-     * construct
+     * MailController constructor.
      * @param \App\Services\Web\V1\Setting\MailService $mailService
      */
     public function __construct(MailService $mailService)
@@ -23,9 +23,8 @@ class MailController
         $this->mailService = $mailService;
     }
 
-
     /**
-     * Summary of show
+     * Mail settings page view
      * @return \Illuminate\Contracts\View\View
      */
     public function show(): View
@@ -41,6 +40,7 @@ class MailController
     public function store(StoreRequest $storeRequest): RedirectResponse
     {
         try {
+            // Extract only the relevant fields from the request
             $data = $storeRequest->only([
                 'mail_mailer',
                 'mail_host',
@@ -48,12 +48,18 @@ class MailController
                 'mail_username',
                 'mail_password',
                 'mail_encryption',
-                'mail_address'
+                'mail_address',
             ]);
+
+            // Update the mail configuration using the MailService
             $this->mailService->updateMailConfig($data);
+
+            // Redirect back with a success message
             return back()->with('t-success', 'Setting Saved');
         } catch (Exception $e) {
+            // Log the error for debugging purposes
             Log::error('App\Http\Controllers\Web\V1\Setting\MailController:store', ['error' => $e->getMessage()]);
+            // Redirect back with an error message
             return back()->with('t-error', 'Failed to update');
         }
     }

@@ -10,6 +10,10 @@ Route::get('/', function () {
 });
 // Authentication Routes
 require 'v1/auth.php';
+// Settings Routes 
+Route::middleware(['auth'])->group(function () {
+    require 'v1/settings.php';
+});
 
 // Dashboard Route
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
