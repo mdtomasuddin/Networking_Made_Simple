@@ -10,37 +10,7 @@ use Illuminate\Support\Str;
 
 class Helper
 {
-
-    //! File or Image Upload
-    public static function fileUpload($file, string $folder, string $name = null): ?string
-    {
-        if (! $file || ! $file->isValid()) {
-            return null;
-        }
-
-        $imageName = ($name ? Str::slug($name) : Str::random(10)) . '.' . $file->extension();
-        $path      = public_path('uploads/' . $folder);
-        if (! file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
-        $file->move($path, $imageName);
-        return 'uploads/' . $folder . '/' . $imageName;
-    }
-
-    //! File or Image Delete
-    public static function fileDelete(string $path): void
-    {
-        if (file_exists($path)) {
-            unlink($path);
-        }
-    }
-    /**
-     * Upload an image and return its URL.
-     *
-     * @param  \Illuminate\Http\UploadedFile  $image
-     * @param  string  $directory
-     * @return string
-     */
+    // Upload a file to the specified directory and return its storage path.
     public static function uploadFile($file, $directory)
     {
         try {
@@ -52,101 +22,30 @@ class Helper
         }
     }
 
-    /**
-     * Delete an image and return a boolean.
-     *
-     * @param  string  $imageUrl
-     * @return bool
-     */
+    // Delete a file from storage based on its URL.
     public static function deleteFile($imageUrl)
     {
         try {
-            // Check if $imageUrl is a valid string
-            if (is_string($imageUrl) && ! empty($imageUrl)) {
-                // Extract the relative path from the URL
-                $parsedUrl    = parse_url($imageUrl);
-                $relativePath = $parsedUrl['path'] ?? '';
-
-                // Remove the leading '/storage/' from the path
-                $relativePath = preg_replace('/^\/?storage\//', '', $relativePath);
-
-                // Check if the image exists
-                if (Storage::disk('public')->exists($relativePath)) {
-                    // Delete the image if it exists
-                    Storage::disk('public')->delete($relativePath);
-                    return true;
-                } else {
-                    // Return false if the image does not exist
-                    return false;
-                }
-            } else {
-                // Return false if $imageUrl is not a valid string
+            if (! is_string($imageUrl) || empty($imageUrl)) {
                 return false;
             }
+
+            $parsedUrl    = parse_url($imageUrl);
+            $relativePath = $parsedUrl['path'] ?? '';
+            $relativePath = preg_replace('/^\/?storage\//', '', $relativePath);
+
+            if (Storage::disk('public')->exists($relativePath)) {
+                Storage::disk('public')->delete($relativePath);
+                return true;
+            }
+
+            return false;
         } catch (Exception $e) {
-            // Handle any other exceptions
             return false;
         }
     }
 
-    /**
-     * Generate a unique slug for the given model and title.
-     *
-     * @param string $title
-     * @param string $table
-     * @param string $slugColumn
-     * @return string
-     */
-    public static function generateUniqueSlug($title, $table, $slugColumn = 'slug')
-    {
-        // Generate initial slug
-        $slug = str::slug($title);
-
-        // Check if the slug exists
-        $count = DB::table($table)->where($slugColumn, 'LIKE', "$slug%")->count();
-
-        // If it exists, append the count
-        return $count ? "{$slug}-{$count}" : $slug;
-    }
-
-    /**
-     * Generate a unique 10-character SKU for a user based on timestamp and random string,
-     * ensuring it does not already exist in the specified table.
-     *
-     * @param int $userId The user ID for whom the SKU is generated.
-     * @param string $tableName The name of the table in which to check for SKU uniqueness.
-     * @return string The generated SKU.
-     */
-    public static function generateUniqueId($table, $column, $length = 10)
-    {
-        $characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $charactersLength = strlen($characters);
-
-        do {
-            $randomString = '';
-            for ($i = 0; $i < $length; $i++) {
-                $randomString .= $characters[rand(0, $charactersLength - 1)];
-            }
-            // Check if SKU is already present in the table
-            $exists = DB::table($table)->where($column, $randomString)->exists();
-        } while ($exists);
-
-        return $randomString;
-    }
-
-    /**
-     * Returns a standardized success response with the provided data, message, and HTTP status code.
-     *
-     * This method formats the response to indicate a successful operation. It includes a success
-     * flag, an optional message, the data to be returned, and an HTTP status code. The response
-     * is structured as a JSON object and the status code defaults to 200 (OK), but can be customized.
-     *
-     * @param mixed $data The data to be included in the response, typically the result of the operation.
-     * @param string|null $message An optional message providing additional context about the success.
-     * @param int $code The HTTP status code for the response (default is 200).
-     *
-     * @return \Illuminate\Http\JsonResponse A JSON response containing the success status, message, data, and code.
-     */
+    //Helper function to return a standardized success JSON response.
     public static function success($code = 200, $message = null, $data = []): JsonResponse
     {
         return response()->json([
@@ -158,20 +57,7 @@ class Helper
         ], $code);
     }
 
-    /**
-     * Returns a standardized error response with the provided data, message, and HTTP status code.
-     *
-     * This method formats the response to indicate an error or failure in the operation. It includes
-     * an error flag, an optional message, the error details or data, and an HTTP status code. The
-     * response is structured as a JSON object, and the status code defaults to 500 (Internal Server Error),
-     * but can be customized to reflect different types of errors.
-     *
-     * @param mixed $data The data to be included in the response, typically containing error details.
-     * @param string|null $message An optional message providing additional context about the error.
-     * @param int $code The HTTP status code for the response (default is 500).
-     *
-     * @return \Illuminate\Http\JsonResponse A JSON response containing the error status, message, data, and code.
-     */
+    //Helper function to return a standardized error JSON response.
     public static function error($code = 500, $message = null, $error = []): JsonResponse
     {
         return response()->json([
@@ -183,7 +69,7 @@ class Helper
         ], $code);
     }
 
-    //! Generate Slug
+    // Generate a unique slug with random suffix if needed.
     public static function makeSlug(string $title, $table): string
     {
         $slug = Str::slug($title);
@@ -192,37 +78,5 @@ class Helper
             $slug         = Str::slug($title) . '-' . $randomString;
         }
         return $slug;
-    }
-
-    public static function jsonResponse(bool $status, string $message, int $code, $data = null, $errors = null, $paginate = false): JsonResponse
-    {
-        $response = [
-            'status'  => $status,
-            'message' => $message,
-            'code'    => $code,
-        ];
-
-        if ($data !== null) {
-            if ($paginate && $data instanceof \Illuminate\Pagination\LengthAwarePaginator) {
-                $response['data']       = $data->items(); // actual items
-                $response['pagination'] = [
-                    'current_page'   => $data->currentPage(),
-                    'last_page'      => $data->lastPage(),
-                    'per_page'       => $data->perPage(),
-                    'total'          => $data->total(),
-                    'first_page_url' => $data->url(1),
-                    'last_page_url'  => $data->url($data->lastPage()),
-                    'next_page_url'  => $data->nextPageUrl(),
-                    'prev_page_url'  => $data->previousPageUrl(),
-                    'from'           => $data->firstItem(),
-                    'to'             => $data->lastItem(),
-                    'path'           => $data->path(),
-                ];
-            } else {
-                $response['data'] = $data;
-            }
-        }
-
-        return response()->json($response, $code);
     }
 }
