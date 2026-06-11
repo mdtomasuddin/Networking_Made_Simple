@@ -18,8 +18,10 @@ class CategoryController
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            // Fetch categories with selected columns and order by latest
             $data = Category::select(['id', 'name', 'image', 'status'])->latest();
 
+            // Using DataTables to format the response for AJAX requests
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
@@ -55,21 +57,26 @@ class CategoryController
         return view('backend.layouts.category.create');
     }
 
-
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'name'  => 'required|string|max:255|unique:categories,name',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10048',
         ]);
         try {
+            // Check if an image file is uploaded
             if ($request->hasFile('image')) {
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'category', time() . '_' . $request->file('image')->getClientOriginalName());
+                $uploaded               = Helper::uploadFile($request->file('image'), 'category');
+                $validatedData['image'] = $uploaded;
             }
+            // Create a new category with the validated data
             Category::create($validatedData);
+            // Return a success response
             return redirect()->route('categories.index')->with('t-success', 'Category Create successfully!');
         } catch (Exception $e) {
+            // Handle the exception
             return response()->json([
                 'success' => false,
                 'message' => 'Category not created',
@@ -77,35 +84,41 @@ class CategoryController
         }
     }
 
-    // Show the form for editing the specified resource. 
+    // Show the form for editing the specified resource.
     public function edit(string $id)
     {
+        // Find the category by ID
         $data = Category::findOrFail($id);
 
+        // Pass the category data to the view
         return view('backend.layouts.category.edit', compact('data'));
     }
-
 
     // Update the specified resource in storage.
     public function update(Request $request, string $id)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'name'  => 'nullable|string|max:200',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10048',
         ]);
 
         try {
+            // Find the category by ID
             $data = Category::findOrFail($id);
+            // Check if a new image file is uploaded
             if ($request->hasFile('image')) {
                 if ($data && $data->image) {
-                    Helper::fileDelete(public_path($data->image));
+                    Helper::deleteFile($data->image);
                 }
-                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'category');
+                $uploaded               = Helper::uploadFile($request->file('image'), 'category');
+                $validatedData['image'] = $uploaded;
             }
-
+            // Update the category with the validated data
             $data->update($validatedData);
             return redirect()->route('categories.index')->with('t-success', 'Category updated successfully!');
         } catch (Exception $e) {
+            // Handle the exception
             return redirect()->back()->withInput()->with('t-error', $e->getMessage());
         }
     }
@@ -114,18 +127,23 @@ class CategoryController
     public function destroy(string $id)
     {
         try {
+            // Find the category by ID
             $data = Category::findOrFail($id);
 
+            // Delete the image
             if (! empty($data->image)) {
-                Helper::fileDelete(public_path($data->image));
+                Helper::deleteFile($data->image);
             }
 
             $data->delete();
+
+            // Return a success response
             return response()->json([
                 'success' => true,
                 'message' => 'Category deleted successfully.',
             ]);
         } catch (Exception $e) {
+            // Handle the exception
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to delete category.',
@@ -137,7 +155,10 @@ class CategoryController
     //Change the status of the specified resource from storage.
     public function status(Request $request, $id)
     {
+        // Find the category by ID
         $data = Category::find($id);
+
+        // If category not found, return a 404 response
         if (! $data) {
             return response()->json([
                 'success' => false,
@@ -147,6 +168,7 @@ class CategoryController
 
         $data->status = ($data->status == 'active') ? 'inactive' : 'active';
         $data->save();
+        // Return a success response
         return response()->json([
             'success' => true,
             'message' => 'Item status changed successfully.',

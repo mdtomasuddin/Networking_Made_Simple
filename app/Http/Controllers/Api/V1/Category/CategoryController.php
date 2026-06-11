@@ -2,45 +2,45 @@
 
 namespace App\Http\Controllers\Api\V1\Category;
 
-use App\Helpers\Helper;
 use App\Models\Category;
+use App\Traits\V1\ApiResponse;
 use Exception;
 use Illuminate\Http\Request;
 
 class CategoryController
 {
+    use ApiResponse; //trait to response standard.
 
-    /**
-     * index get.
-     * par page default=50
-     */
+    // index function to show all category with pagination
     public function index(Request $request)
     {
         try {
             $perPage = $request->query('per_page', 50);
-            $data    = Category::where('status', 'active')->select('id', 'name', 'image')->paginate($perPage);
-            return Helper::jsonResponse(true, 'Data retrieved successfully.', 200, $data, true);
+            $data    = Category::where('status', 'active')->paginate($perPage);
+
+            //response in pagination
+            return $this->success(200, 'Data retrieved successfully.', $data);
         } catch (Exception $e) {
-            return Helper::jsonResponse(false, 'Failed to retrieve Data.', 500, [
+            return $this->error(500, 'Failed to retrieve Data.', [
                 'error' => $e->getMessage(),
             ]);
         }
     }
 
-    /**
-     * show
-     * Experience Room ID .
-     */
+    // show function to show single category by id
     public function show($id)
     {
         try {
-            $data = Category::with('jobResponsibities:id,category_id,job_title,responsibility,skill')->select('id', 'name', 'image')->where('status', 'active')->find($id);
+            $data = Category::where('status', 'active')->find($id);
+
+            //  show data not found
             if (! $data) {
-                return Helper::jsonResponse(false, 'Data Not Found', 404);
+                return $this->error(404, 'Data Not Found');
             }
-            return Helper::jsonResponse(true, 'Data retrieved successfully.', 200, $data);
+            //show data
+            return $this->success(200, 'Data retrieved successfully.', $data);
         } catch (Exception $e) {
-            return Helper::jsonResponse(false, 'Failed to retrieve Data.', 500, [
+            return $this->error(500, 'Failed to retrieve Data.', [
                 'error' => $e->getMessage(),
             ]);
         }

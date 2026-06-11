@@ -25,5 +25,17 @@ class Category extends Model
         'deleted_at' => 'datetime',
     ];
 
-    //Relationships and other model methods can be added here
+    // Accessor for the image attribute
+    public function getImageAttribute($url): ?string
+    {
+        // Check if the URL is not empty
+        if ($url) {
+            if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) {
+                return $url; // Return the URL as is if it already contains http:// or https://
+            } else {
+                return asset('/' . $url); // Return the full URL
+            }
+        }
+        return null; // Return null if the URL is empty
+    }
 }
