@@ -44,6 +44,20 @@
                         <i data-feather="grid" class="nav-icon me-2 icon-xxs"></i>Categories </a>
                 </li>
                 <!--end::CategoriesLink-->
+                <!--begin::Privacy Policy-->
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('privacy-policy.index*') ? 'active' : '' }}"
+                        href="{{ route('privacy-policy.index') }}">
+                        <i data-feather="shield" class="nav-icon me-2 icon-xxs"></i>Privacy Policy </a>
+                </li>
+                <!--end::Privacy Policy-->
+                <!--begin::Terms and conditions-->
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('terms-and-conditions.index*') ? 'active' : '' }}"
+                        href="{{ route('terms-and-conditions.index') }}">
+                        <i data-feather="file-text" class="nav-icon me-2 icon-xxs"></i>Terms and Conditions </a>
+                </li>
+                <!--end::Terms and conditions-->
 
                 <!--begin::SystemSettingsHeading-->
                 <li class="nav-item mt-6">

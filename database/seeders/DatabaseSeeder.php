@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             SystemSettingSeeder::class,
             SocialMediaSeeder::class,
+            ContentSeeder::class,
         ]);
     }
 }
