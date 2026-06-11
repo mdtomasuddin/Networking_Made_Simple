@@ -32,14 +32,6 @@ class ForgerPasswordService
 
     /**
      * Resets the user's password based on the provided credentials.
-     *
-     * Validates the credentials and attempts to reset the user's password using the ForgetPasswordRepository.
-     * If any exceptions occur (such as user not found or OTP not verified), they are rethrown.
-     * Any other errors are logged before being thrown.
-     *
-     * @param array $credentials The user's credentials including email, password, and OTP details.
-     *
-     * @return bool True if the password was successfully reset, otherwise throws an exception.
      */
     public function resetPassword(array $credentials): bool
     {

@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 class SocialLoginRequest extends FormRequest
 {
     use ApiResponse;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -20,53 +21,37 @@ class SocialLoginRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'token' => 'required|string',
+            'token'    => 'required|string',
             'provider' => 'required|in:google,facebook',
         ];
     }
 
-
     /**
-     * Get custom validation error messages.
-     *
-     * This method defines custom error messages for validation rules applied
-     * to the incoming request data. The messages correspond to specific
-     * fields like 'token' and 'provider', providing clear and descriptive
-     * feedback when validation fails.
-     *
+     * Get the custom error messages for validation rules.
      * @return array The custom error messages for validation failures.
      */
     public function messages(): array
     {
         return [
-            'token.required' => 'Token is required',
+            'token.required'    => 'Token is required',
             'provider.required' => 'Provider is required',
-            'provider.in' => 'Invalid provider selected. The available options are Google & Facebook.',
+            'provider.in'       => 'Invalid provider selected. The available options are Google & Facebook.',
         ];
     }
 
-
-
     /**
      * Handle a failed validation attempt.
-     *
-     * This method is triggered when the validation fails. It checks if the
-     * validation errors for the 'token' or 'provider' fields are present and
-     * selects the first error message to return as part of the response.
-     *
      * @param Validator $validator The validator instance containing the validation errors.
-     *
      * @throws ValidationException Throws a validation exception with the custom error response.
      */
     protected function failedValidation(Validator $validator): never
     {
-        $tokenErrors = $validator->errors()->get('token') ?? null;
+        $tokenErrors    = $validator->errors()->get('token') ?? null;
         $providerErrors = $validator->errors()->get('provider') ?? null;
 
         if ($tokenErrors) {
@@ -82,6 +67,5 @@ class SocialLoginRequest extends FormRequest
         );
 
         throw new ValidationException($validator, $response);
-
     }
 }

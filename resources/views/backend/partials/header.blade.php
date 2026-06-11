@@ -41,12 +41,12 @@
             <!--begin::NavRight-->
             <ul class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
 
-                <!--begin::ThemeToggle-->
+                {{-- <!--begin::ThemeToggle-->
                 <a href="#" class="form-check form-switch theme-switch btn btn-ghost btn-icon rounded-circle mb-0">
                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                     <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                 </a>
-                <!--end::ThemeToggle-->
+                <!--end::ThemeToggle--> --}}
 
                 <!--begin::NotificationsDropdown (hidden)-->
                 <li class="dropdown stopevent ms-2">

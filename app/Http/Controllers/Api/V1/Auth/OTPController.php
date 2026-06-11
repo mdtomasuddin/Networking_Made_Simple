@@ -20,8 +20,6 @@ class OTPController extends Controller
 
     /**
      * Constructor for initializing the class with the OTPService dependency.
-     *
-     * @param OTPService $otpService The service used for handling OTP (One-Time Password) generation and validation.
      */
     public function __construct(OTPService $otpService)
     {
@@ -33,13 +31,6 @@ class OTPController extends Controller
 
     /**
      * Sends an OTP (One-Time Password) to the provided email address.
-     *
-     * Takes the email and operation details from the request, generates the OTP using the OTPService,
-     * and returns a JSON response with the OTP or an error message.
-     *
-     * @param OTPRequest $request The request containing the email and operation for which the OTP is being generated.
-     *
-     * @return JsonResponse The JSON response with the OTP or an error message.
      */
     public function otpSend(OTPRequest $request): JsonResponse
     {
@@ -56,12 +47,6 @@ class OTPController extends Controller
 
     /**
      * Verifies the provided OTP (One-Time Password) for the given email and operation.
-     *
-     * Takes the email, operation, and OTP from the request, validates the OTP using the OTPService,
-     * and returns a JSON response indicating whether the OTP is verified or an error message.
-     *
-     * @param OTPMatchRequest $request The request containing the email, operation, and OTP to be verified.
-     *
      * @return JsonResponse The JSON response indicating the OTP verification result or an error message.
      */
     public function otpMatch(OTPMatchRequest $request): JsonResponse

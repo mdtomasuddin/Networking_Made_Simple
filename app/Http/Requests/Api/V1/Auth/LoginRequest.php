@@ -22,21 +22,18 @@ class LoginRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             "email"    => "required|email|exists:users,email",
-            "password" => ["required", new Validatepassword($this->input('email'))]
+            "password" => ["required", new Validatepassword($this->input('email'))],
         ];
     }
 
-
     /**
      * Define custom validation messages for the email and password fields.
-     *
      * @return array The custom error messages for the validation rules.
      */
     public function messages(): array
@@ -48,25 +45,13 @@ class LoginRequest extends FormRequest
         ];
     }
 
-
-
     /**
      * Handles failed validation by formatting the validation errors and throwing a ValidationException.
-     *
-     * This method is called when validation fails in a form request. It uses the `error` method
-     * from the `ApiResponse` trait to generate a standardized error response with the validation
-     * error messages and a 422 HTTP status code. It then throws a `ValidationException` with the
-     * formatted response.
-     *
-     * @param Validator $validator The validator instance containing the validation errors.
-     *
-     * @return void Throws a ValidationException with a formatted error response.
-     *
      * @throws ValidationException The exception is thrown to halt further processing and return validation errors.
      */
-    protected function failedValidation(Validator $validator):never
+    protected function failedValidation(Validator $validator): never
     {
-        $emailErrors = $validator->errors()->get('email') ?? null;
+        $emailErrors    = $validator->errors()->get('email') ?? null;
         $passwordErrors = $validator->errors()->get('password') ?? null;
 
         if ($emailErrors) {

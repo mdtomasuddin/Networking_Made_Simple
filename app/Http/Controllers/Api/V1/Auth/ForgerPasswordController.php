@@ -18,8 +18,6 @@ class ForgerPasswordController extends Controller
 
     /**
      * Constructor for initializing the class with the ForgerPasswordService dependency.
-     *
-     * @param ForgerPasswordService $forgerPasswordService The service used for handling password recovery and management.
      */
     public function __construct(ForgerPasswordService $forgerPasswordService)
     {
@@ -29,13 +27,7 @@ class ForgerPasswordController extends Controller
 
     /**
      * Resets the user's password based on the provided reset request data.
-     *
-     * Validates the incoming password reset request, processes the reset via the ForgerPasswordService,
-     * and returns a JSON response indicating the success or failure of the password reset operation.
-     *
-     * @param ForgetPasswordResetRequest $forgetPasswordResetRequest The validated request containing the reset data.
-     *
-     * @return JsonResponse The JSON response with the result of the password reset process.
+     * @param ForgetPasswordResetRequest $forgetPasswordResetRequest
      */
     public function resetPassword(ForgetPasswordResetRequest $forgetPasswordResetRequest): JsonResponse
     {

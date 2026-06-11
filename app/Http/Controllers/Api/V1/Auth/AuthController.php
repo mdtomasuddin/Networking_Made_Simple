@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Api\V1\Controller;
+use App\Http\Requests\Api\V1\Auth\LoginRequest;
+use App\Http\Requests\Api\V1\Auth\RegisterRequest;
 use App\Http\Resources\Api\V1\Auth\LoginResponce;
 use App\Http\Resources\Api\V1\Auth\RegisterUserResource;
 use App\Services\Api\V1\Auth\AuthService;
-use App\Http\Requests\Api\V1\Auth\LoginRequest;
-use App\Http\Requests\Api\V1\Auth\RegisterRequest;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +19,6 @@ class AuthController extends Controller
 
     /**
      * Constructor for initializing the class with the AuthService dependency.
-     *
      * @param AuthService $authService The authentication service instance used for handling authentication-related operations.
      */
     public function __construct(AuthService $authService)
@@ -27,28 +26,11 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-
-
     /**
      * Handles the user registration process by validating the request and delegating
      * the registration logic to the AuthService.
-     *
-     * This method first validates the incoming registration data using the provided
-     * RegisterRequest. If validation passes, it calls the AuthService to register
-     * the user and generate a JWT token. Upon success, it returns a success response
-     * with the generated token. If an error occurs during the registration process,
-     * it returns an error response with the appropriate message.
-     *
-     * @param RegisterRequest $request The validated registration request containing user data:
-     *                                 - 'name' (string): The user's full name.
-     *                                 - 'email' (string): The user's email address.
-     *                                 - 'password' (string): The user's password.
-     *
-     * @return \Illuminate\Http\JsonResponse A JSON response with the registration result:
-     *                                      - On success: Returns the JWT token and a success message.
-     *                                      - On failure: Returns the error message.
-     *
-     * @throws Exception If any error occurs during user registration.
+     * @param RegisterRequest $request
+     * @throws Exception
      */
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -64,17 +46,11 @@ class AuthController extends Controller
         }
     }
 
-
-
     /**
      * Handles the user registration process.
-     *
      * Validates the incoming registration request data, calls the AuthService to register the user,
-     * and returns a JSON response with the result of the registration attempt.
-     *
-     * @param RegisterRequest $request The validated registration request containing user data.
-     *
-     * @return JsonResponse The JSON response indicating the success or failure of the registration.
+     * @param LoginRequest $request
+     * @return JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -90,16 +66,9 @@ class AuthController extends Controller
         }
     }
 
-
-
-
     /**
      * Handles user logout by terminating the user's session.
-     *
-     * Calls the AuthService to perform the logout operation, and returns a JSON response
-     * indicating the success or failure of the logout attempt.
-     *
-     * @return JsonResponse The JSON response indicating the success or failure of the logout.
+     * @return JsonResponse
      */
     public function logout(): JsonResponse
     {
@@ -112,15 +81,8 @@ class AuthController extends Controller
         }
     }
 
-
-
-
     /**
      * Refreshes the authentication token for the user.
-     *
-     * Retrieves the current token, refreshes it, and returns a new token in the response.
-     * If the refresh operation fails, an error message is logged and a failure response is returned.
-     *
      * @return JsonResponse The JSON response containing the updated token or an error message.
      */
     public function refresh(): JsonResponse

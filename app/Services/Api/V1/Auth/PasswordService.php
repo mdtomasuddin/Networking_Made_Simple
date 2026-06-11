@@ -4,15 +4,12 @@ namespace App\Services\Api\V1\Auth;
 
 use App\Interfaces\Api\V1\Auth\PasswordRepositoryInterface;
 use App\Models\User;
-
 use Exception;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class PasswordService
 {
     protected PasswordRepositoryInterface $passwordRepository;
-
 
     /**
      * Constructor for initializing the class with the PasswordRepository dependency.
@@ -26,16 +23,9 @@ class PasswordService
 
     /**
      * Changes the user's password based on the provided email and new password.
-     *
-     * Validates and updates the user's password in the repository. If any errors occur,
-     * they are logged and rethrown.
-     *
-     * @param string $email The user's email address associated with the account.
-     * @param string $password The new password to be set for the user.
-     *
      * @return bool
      */
-    public function changePassword(string $email, string $password):bool
+    public function changePassword(string $email, string $password): bool
     {
         try {
             return $this->passwordRepository->changePassword($email, $password);
