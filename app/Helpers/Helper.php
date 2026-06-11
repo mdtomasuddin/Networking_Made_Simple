@@ -14,10 +14,12 @@ class Helper
     public static function uploadFile($file, $directory)
     {
         try {
+            $directory     = 'uploads/' . trim($directory, '/'); // Ensure the directory exists
             $imageFileName = uniqid('image_') . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $imageFileName, 'public');
 
-            return $directory . '/' . $imageFileName;
+            // Return the relative path to the stored file
+            return 'storage/' . $directory . '/' . $imageFileName;
         } catch (Exception $e) {
             return redirect()->back()->with('t-error', 'Something went wrong');
         }
@@ -30,14 +32,14 @@ class Helper
             if (! is_string($imageUrl) || empty($imageUrl)) {
                 return false;
             }
-
+            // Parse the URL to get the relative path
             $parsedUrl    = parse_url($imageUrl);
             $relativePath = $parsedUrl['path'] ?? '';
             $relativePath = preg_replace('/^\/?storage\//', '', $relativePath);
 
+            // Check if the file exists before attempting to delete it
             if (Storage::disk('public')->exists($relativePath)) {
                 Storage::disk('public')->delete($relativePath);
-
                 return true;
             }
 
