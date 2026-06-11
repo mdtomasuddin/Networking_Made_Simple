@@ -27,7 +27,7 @@ class MailController
      * Mail settings page view
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(): View
+    public function index(): View
     {
         return view('backend.layouts.settings.mail.edit');
     }

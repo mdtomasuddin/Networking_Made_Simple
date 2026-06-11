@@ -23,10 +23,9 @@
                                 <!--begin::FormCard-->
                                 <div class="card mb-10">
                                     <div class="tab-content p-4">
-                                        <form method="POST" action="{{ route('system.update') }}"
+                                        <form method="POST" action="{{ route('system-setting.store') }}"
                                             enctype="multipart/form-data">
                                             @csrf
-                                            @method('PATCH')
 
                                             <div class="row">
 
@@ -143,10 +142,17 @@
                                                 <!--begin::LogoUpload-->
                                                 <div class="col-md-4 mb-4">
                                                     <div class="form-group">
+                                                        <div class="mb-3">
+                                                            <img id="logo-preview"
+                                                                src="{{ !empty($setting->logo) ? asset($setting->logo) : asset('assets/backend/images/brand/logo/logo-2.svg') }}"
+                                                                alt="Logo Preview" class="img-fluid rounded border p-1"
+                                                                style="max-height: 80px; object-fit: contain;">
+                                                        </div>
                                                         <label for="logo" class="form-label fw-medium">Logo</label>
                                                         <input type="file"
                                                             class="form-control @error('logo') is-invalid @enderror"
-                                                            name="logo" id="logo" accept="image/*">
+                                                            name="logo" id="logo" accept="image/*"
+                                                            onchange="previewImage(this, 'logo-preview')">
                                                         @error('logo')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
@@ -157,10 +163,17 @@
                                                 <!--begin::FaviconUpload-->
                                                 <div class="col-md-4 mb-4">
                                                     <div class="form-group">
+                                                        <div class="mb-3">
+                                                            <img id="favicon-preview"
+                                                                src="{{ !empty($setting->favicon) ? asset($setting->favicon) : asset('assets/backend/images/brand/logo/logo-2.svg') }}"
+                                                                alt="Favicon Preview" class="img-fluid rounded border p-1"
+                                                                style="max-height: 80px; object-fit: contain;">
+                                                        </div>
                                                         <label for="favicon" class="form-label fw-medium">Favicon</label>
                                                         <input type="file"
                                                             class="form-control @error('favicon') is-invalid @enderror"
-                                                            name="favicon" id="favicon" accept="image/*">
+                                                            name="favicon" id="favicon" accept="image/*"
+                                                            onchange="previewImage(this, 'favicon-preview')">
                                                         @error('favicon')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
@@ -171,11 +184,18 @@
                                                 <!--begin::SidebarUpload-->
                                                 <div class="col-md-4 mb-4">
                                                     <div class="form-group">
+                                                        <div class="mb-3">
+                                                            <img id="sidebar-preview"
+                                                                src="{{ !empty($setting->sidebar) ? asset($setting->sidebar) : asset('assets/backend/images/sidebar.png') }}"
+                                                                alt="Sidebar Preview" class="img-fluid rounded border p-1"
+                                                                style="max-height: 80px; object-fit: contain;">
+                                                        </div>
                                                         <label for="sidebar" class="form-label fw-medium">Sidebar
                                                             Image</label>
                                                         <input type="file"
                                                             class="form-control @error('sidebar') is-invalid @enderror"
-                                                            name="sidebar" id="sidebar" accept="image/*">
+                                                            name="sidebar" id="sidebar" accept="image/*"
+                                                            onchange="previewImage(this, 'sidebar-preview')">
                                                         @error('sidebar')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
@@ -229,6 +249,16 @@
                     console.error(error);
                 });
             // End Ckeditor5
+
+            function previewImage(input, previewId) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById(previewId).setAttribute('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
         </script>
     @endpush
     <!--end::Scripts-->

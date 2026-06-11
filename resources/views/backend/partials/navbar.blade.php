@@ -68,8 +68,8 @@
                 <!--begin::Settings-->
                 @php
                     $settingsOpen =
-                        Route::is('v1.setting.mail.show') ||
-                        Route::is('system.index') ||
+                        Route::is('mail-setting.index') ||
+                        Route::is('system-setting.index') ||
                         Route::is('integration.setting') ||
                         Route::is('social-media-links.*');
                 @endphp
@@ -85,16 +85,16 @@
                         <ul class="nav flex-column ms-3">
                             <!--begin::EmailSettings-->
                             <li class="nav-item">
-                                <a class="nav-link {{ Route::is('v1.setting.mail.show') ? 'active' : '' }}"
-                                    href="{{ route('v1.setting.mail.show') }}">
+                                <a class="nav-link {{ Route::is('mail-setting.index') ? 'active' : '' }}"
+                                    href="{{ route('mail-setting.index') }}">
                                     Email Settings
                                 </a>
                             </li>
                             <!--end::EmailSettings-->
                             <!--begin::System settings-->
                             <li class="nav-item">
-                                <a class="nav-link {{ Route::is('system.index') ? 'active' : '' }}"
-                                    href="{{ route('system.index') }}">
+                                <a class="nav-link {{ Route::is('system-setting.index') ? 'active' : '' }}"
+                                    href="{{ route('system-setting.index') }}">
                                     System Settings
                                 </a>
                             </li>

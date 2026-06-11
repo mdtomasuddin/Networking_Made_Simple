@@ -28,7 +28,7 @@ class SystemSettingsController
      * Update the system settings.
      * @param Request $request
      */
-    public function update(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
@@ -65,40 +65,49 @@ class SystemSettingsController
             // * Handle logo file
             if ($request->boolean('remove_logo')) {
                 if ($setting->logo) {
-                    Helper::fileDelete(public_path($setting->logo));
+                    Helper::deleteFile($setting->logo);
                     $setting->logo = null;
                 }
             } elseif ($request->hasFile('logo')) {
                 if ($setting->logo) {
-                    Helper::fileDelete(public_path($setting->logo));
+                    Helper::deleteFile($setting->logo);
                 }
-                $setting->logo = Helper::fileUpload($request->file('logo'), 'logo', $setting->logo);
+                $uploaded = Helper::uploadFile($request->file('logo'), 'logo');
+                if (is_string($uploaded)) {
+                    $setting->logo = $uploaded;
+                }
             }
 
             // * Handle favicon file
             if ($request->boolean('remove_favicon')) {
                 if ($setting->favicon) {
-                    Helper::fileDelete(public_path($setting->favicon));
+                    Helper::deleteFile($setting->favicon);
                     $setting->favicon = null;
                 }
             } elseif ($request->hasFile('favicon')) {
                 if ($setting->favicon) {
-                    Helper::fileDelete(public_path($setting->favicon));
+                    Helper::deleteFile($setting->favicon);
                 }
-                $setting->favicon = Helper::fileUpload($request->file('favicon'), 'favicon', $setting->favicon);
+                $uploaded = Helper::uploadFile($request->file('favicon'), 'favicon');
+                if (is_string($uploaded)) {
+                    $setting->favicon = $uploaded;
+                }
             }
 
             // * Handle sidebar file
             if ($request->boolean('remove_sidebar')) {
                 if ($setting->sidebar) {
-                    Helper::fileDelete(public_path($setting->sidebar));
+                    Helper::deleteFile($setting->sidebar);
                     $setting->sidebar = null;
                 }
             } elseif ($request->hasFile('sidebar')) {
                 if ($setting->sidebar) {
-                    Helper::fileDelete(public_path($setting->sidebar));
+                    Helper::deleteFile($setting->sidebar);
                 }
-                $setting->sidebar = Helper::fileUpload($request->file('sidebar'), 'sidebar', $setting->sidebar);
+                $uploaded = Helper::uploadFile($request->file('sidebar'), 'sidebar');
+                if (is_string($uploaded)) {
+                    $setting->sidebar = $uploaded;
+                }
             }
             // Save the updated settings to the database
             $setting->save();

@@ -8,17 +8,10 @@ use App\Http\Controllers\Web\V1\Settings\SystemSettingsController;
 use App\Http\Controllers\Web\V1\Settings\TermsAndConditionsController;
 use Illuminate\Support\Facades\Route;
 
-// Mail SMTP Settings
-Route::prefix('settings/mail')->name('v1.setting.mail.')->controller(MailController::class)->group(function () {
-    Route::get('/', 'show')->name('show');
-    Route::post('/', 'store')->name('store');
-});
-
-// System Settings
-Route::controller(SystemSettingsController::class)->group(function () {
-    Route::get('/system-setting', 'index')->name('system.index');
-    Route::patch('/system-setting', 'update')->name('system.update');
-});
+//! Mail SMTP Settings
+Route::resource('mail-setting', MailController::class);
+//! System Settings
+Route::resource('system-setting', SystemSettingsController::class);
 
 // Integration Setting (Google, Stripe)
 Route::controller(IntegrationController::class)->group(function () {
