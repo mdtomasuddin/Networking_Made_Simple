@@ -61,4 +61,15 @@
         font-size: .875em;
         color: var(--danger);
     }
+
+    /*Start:CKEditor Global Styles  */
+    .ck-editor__editable_inline {
+        min-height: 250px;
+    }
+
+    .ck-powered-by {
+        display: none !important;
+    }
+
+    /*Ending:CKEditor Global Styles  */
 </style>

@@ -1,19 +1,19 @@
 <!-- Scripts -->
 <!-- Libs JS -->
-<script src="{{asset('assets/backend/libs/jquery/dist/jquery.min.js')}}"></script>
-<script src="{{asset('assets/backend/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{asset('assets/backend/libs/feather-icons/dist/feather.min.js')}}"></script>
-<script src="{{asset('assets/backend/libs/simplebar/dist/simplebar.min.js')}}"></script>
-<script src="{{asset('assets/backend/libs/dropzone/dist/min/dropzone.min.js')}}"></script>
-<script src="{{asset('assets/backend/libs/flatpickr/dist/flatpickr.min.js')}}"></script>
+<script src="{{ asset('assets/backend/libs/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/backend/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/backend/libs/feather-icons/dist/feather.min.js') }}"></script>
+<script src="{{ asset('assets/backend/libs/simplebar/dist/simplebar.min.js') }}"></script>
+<script src="{{ asset('assets/backend/libs/dropzone/dist/min/dropzone.min.js') }}"></script>
+<script src="{{ asset('assets/backend/libs/flatpickr/dist/flatpickr.min.js') }}"></script>
 
-  <!-- quill js -->
-  <script src="{{asset('assets/backend/libs/quill/dist/quill.min.js')}}"></script>
+<!-- quill js -->
+<script src="{{ asset('assets/backend/libs/quill/dist/quill.min.js') }}"></script>
 
 <!-- Theme JS -->
-<script src="{{asset('assets/backend/js/theme.min.js')}}"></script>
-<script src="{{asset('assets/backend/libs/apexcharts/dist/apexcharts.min.js')}}"></script>
-<script src="{{asset('assets/backend/js/vendors/chart.js')}}"></script>
+<script src="{{ asset('assets/backend/js/theme.min.js') }}"></script>
+<script src="{{ asset('assets/backend/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+<script src="{{ asset('assets/backend/js/vendors/chart.js') }}"></script>
 
 
 
@@ -129,6 +129,24 @@
 </script>
 
 {{-- sweetalert --}}
-<script src="{{asset('assets/custom/js/sweetalert2@11.js')}}"></script>
+<script src="{{ asset('assets/custom/js/sweetalert2@11.js') }}"></script>
+
+<!-- Include CKEditor 5 from CDN globally -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+    // Start Ckeditor5.
+    if (typeof ClassicEditor !== 'undefined') {
+        const originalCreate = ClassicEditor.create;
+        ClassicEditor.create = function(element, config) {
+            config = config || {};
+            config.toolbar = config.toolbar || ['heading', '|', 'bold', 'italic', 'link', 'bulletedList',
+                'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo'
+            ];
+            return originalCreate.call(ClassicEditor, element, config);
+        };
+    }
+    // End Ckeditor5.
+</script>
 
 @stack('scripts')
