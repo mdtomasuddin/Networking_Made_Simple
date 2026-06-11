@@ -222,16 +222,13 @@
     <!--begin::Scripts-->
     @push('scripts')
         <script>
-            // Classic Editor
-            document.addEventListener("DOMContentLoaded", function() {
-                if (document.querySelector('#description')) {
-                    ClassicEditor
-                        .create(document.querySelector('#description'))
-                        .catch(error => {
-                            console.error(error);
-                        });
-                }
-            });
+            // Start Ckeditor5
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .catch(error => {
+                    console.error(error);
+                });
+            // End Ckeditor5
         </script>
     @endpush
     <!--end::Scripts-->
