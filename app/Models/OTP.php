@@ -7,43 +7,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OTP extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // The attributes that are mass assignable.
     protected $guarded = [];
 
+    // The attributes that should be hidden for serialization.
+    protected $hidden = ['created_at', 'updated_at'];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    // The attributes that should be cast.
     protected function casts(): array
     {
         return [
-            'number' => 'integer',
+            'number'     => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
     }
 
-    /**
-     * user
-     * @return BelongsTo<User, Profile>
-     */
+    // Relationships and other model methods can be added here
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

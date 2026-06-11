@@ -17,95 +17,63 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    //table prefix
+    protected $table = 'users';
+
+    // The attributes that are mass assignable.
     protected $guarded = [];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // The attributes that should be hidden for serialization.
+    protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    // The attributes that should be cast.
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
-
-
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
+    //Get the identifier that will be stored in the subject claim of the JWT.
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
+    //Return a key value array, containing any custom claims to be added to the JWT.
     public function getJWTCustomClaims()
     {
         return [];
     }
 
+    public function getImageAttribute($url): string
+    {
+        if ($url) {
+            if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) {
+                return $url;
+            } else {
+                return asset('storage/' . $url);
+            }
+        } else {
+            return asset('assets/backend/images/placeholder/placeholder-4by3.svg');
+        }
+    }
 
-    /**
-     * sccessor for avater attribute
-     * @param mixed $url
-     * @return string
-     */
+
+    //Accessor for avatar attribute
     public function getAvatarAttribute($url): ?string
     {
         return $url ?: null;
     }
 
-    /**
-     * profile
-     * @return HasOne<Profile, User>
-     */
-    public function profile(): HasOne
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    /**
-     * otps
-     * @return HasMany<OTP, User>
-     */
+    // Relationships and other model methods can be added here
     public function otps(): HasMany
     {
         return $this->hasMany(OTP::class);
     }
-
-    /**
-     * Getting the role of the user
-     *
-     * @return BelongsTo<Role, User>
-     */
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);

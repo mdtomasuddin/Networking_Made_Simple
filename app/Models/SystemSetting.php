@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemSetting extends Model
 {
+    // Table prefix
     protected $table = 'system_settings';
 
+    // The attributes that are mass assignable.
     protected $guarded = [];
 
+    // The attributes that should be cast.
     protected $casts   = [
         'id'                => 'integer',
         'title'             => 'string',
@@ -27,6 +30,7 @@ class SystemSetting extends Model
         'updated_at'        => 'datetime',
     ];
 
+    // Use this function in your existing attributes
     public function getFileUrlAttribute($value): ?string
     {
         if (filter_var($value, FILTER_VALIDATE_URL)) {

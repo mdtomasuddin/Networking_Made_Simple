@@ -16,6 +16,7 @@ class Helper
         try {
             $imageFileName = uniqid('image_') . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $imageFileName, 'public');
+
             return $directory . '/' . $imageFileName;
         } catch (Exception $e) {
             return redirect()->back()->with('t-error', 'Something went wrong');
@@ -36,6 +37,7 @@ class Helper
 
             if (Storage::disk('public')->exists($relativePath)) {
                 Storage::disk('public')->delete($relativePath);
+
                 return true;
             }
 
@@ -45,7 +47,7 @@ class Helper
         }
     }
 
-    //Helper function to return a standardized success JSON response.
+    // Helper function to return a standardized success JSON response.
     public static function success($code = 200, $message = null, $data = []): JsonResponse
     {
         return response()->json([
@@ -57,7 +59,7 @@ class Helper
         ], $code);
     }
 
-    //Helper function to return a standardized error JSON response.
+    // Helper function to return a standardized error JSON response.
     public static function error($code = 500, $message = null, $error = []): JsonResponse
     {
         return response()->json([
@@ -77,6 +79,19 @@ class Helper
             $randomString = Str::random(5);
             $slug         = Str::slug($title) . '-' . $randomString;
         }
+
         return $slug;
+    }
+
+    // Generate a unique slug based on the title and existing slugs in the database.
+    public static function generateUniqueSlug($title, $table, $slugColumn = 'slug')
+    {
+        // Generate initial slug
+        $slug = Str::slug($title);
+        // Check if the slug exists
+        $count = DB::table($table)->where($slugColumn, 'LIKE', "$slug%")->count();
+
+        // If it exists, append the count
+        return $count ? "{$slug}_{$count}" : $slug;
     }
 }
