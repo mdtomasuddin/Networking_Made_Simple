@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\V1\Settings\IntegrationController;
 use App\Http\Controllers\Web\V1\Settings\MailController;
+use App\Http\Controllers\Web\V1\Settings\SocialMediaController;
 use App\Http\Controllers\Web\V1\Settings\SystemSettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,6 @@ Route::controller(IntegrationController::class)->group(function () {
     Route::patch('/google-setting', 'updateGoogleCredentials')->name('google.update');
     Route::patch('/stripe-setting', 'updateStripeCredentials')->name('stripe.update');
 });
+
+//! social media links
+Route::resource('social-media-links', SocialMediaController::class);
