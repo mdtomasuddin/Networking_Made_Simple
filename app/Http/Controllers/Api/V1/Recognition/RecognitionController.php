@@ -15,6 +15,43 @@ class RecognitionController
     use ApiResponse;
 
     /**
+     * Display a listing of the user's recognition.
+     */
+    public function index(Request $request)
+    {
+        try {
+            // Get the authenticated user
+            $user   = auth()->user();
+            $search = $request->query('search');
+
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            //Get the recognitions.
+            $recognitions = Recognition::where('user_id', $user->id);
+
+            //handle search query if provided.
+            if (! empty($search)) {
+                $recognitions->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('year', 'like', '%' . $search . '%');
+            }
+
+            //get the recognitions
+            $recognitions = $recognitions->get();
+
+            //return the recognitions as a resource collection.
+            $data = RecognitionResource::collection($recognitions);
+            return $this->success(200, 'Recognitions retrieved successfully.', $data);
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to retrieve recognitions.', ['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
      * Store a newly created recognition in storage.
      * @param RecognitionRequest $request
      */
