@@ -82,5 +82,72 @@ class RecognitionController
         }
     }
 
+    /**
+     * Update the specified recognition in storage.
+     * @param RecognitionRequest $request
+     * @param string $id
+     */
+    public function update(RecognitionRequest $request, $id)
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
 
+            //find the recognition by id and user_id
+            $recognition = Recognition::where('id', $id)->where('user_id', $user->id)->first();
+
+            if (! $recognition) {
+                return $this->error(404, 'Recognition Not Found');
+            }
+
+            //update the recognition
+            $validatedData = $request->validated();
+            $recognition->update($validatedData);
+
+            //create the resource and return the response
+            $data = new RecognitionResource($recognition);
+            return $this->success(200, 'Recognition updated successfully.', $data);
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to update recognition.', ['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified recognition from storage.
+     * @param string $id
+     */
+    public function destroy($id)
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
+
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            //find the recognition by id and user_id
+            $recognition = Recognition::where('id', $id)->where('user_id', $user->id)->first();
+
+            //check if the recognition exists and belongs to the user
+            if (! $recognition) {
+                return $this->error(404, 'Recognition not found.');
+            }
+
+            //delete the recognition
+            $recognition->delete();
+
+            //return success response
+            return $this->success(200, 'Recognition deleted successfully.');
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to delete recognition.', ['error' => $e->getMessage()]);
+        }
+    }
 }
