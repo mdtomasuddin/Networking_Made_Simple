@@ -115,4 +115,35 @@ class ExpertiseController
         }
     }
 
+    /**
+     * Remove the specified expertise from storage.
+     * @param string $id
+     */
+    public function destroy($id)
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
+
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            //find the expertise by id and user_id
+            $expertise = Expertise::where('id', $id)->where('user_id', $user->id)->first();
+            //check if the expertise exists and belongs to the user
+            if (! $expertise) {
+                return $this->error(404, 'Expertise not found.');
+            }
+
+            //delete the expertise
+            $expertise->delete();
+            //return success response
+            return $this->success(200, 'Expertise deleted successfully.');
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to delete expertise.', ['error' => $e->getMessage()]);
+        }
+    }
 }
