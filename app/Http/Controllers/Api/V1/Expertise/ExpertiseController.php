@@ -14,6 +14,40 @@ class ExpertiseController
     //use the ApiResponse trait for standardized API responses.
     use ApiResponse;
 
+    /**
+     * Display a listing of the user's expertises.
+     */
+    public function index(Request $request)
+    {
+        try {
+            // Get the authenticated user
+            $user   = auth()->user();
+            $search = $request->query('search');
+
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            //Get the expertises.
+            $expertises = Expertise::where('user_id', $user->id);
+
+            //handle search query if provided.
+            if (! empty($search)) {
+                $expertises->where('name', 'like', '%' . $search . '%');
+            }
+
+            //get the expertises
+            $expertises = $expertises->get();
+
+            //return the expertises as a resource collection.
+            $data = ExpertiseResource::collection($expertises);
+            return $this->success(200, 'Expertises retrieved successfully.', $data);
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to retrieve expertises.', ['error' => $e->getMessage()]);
+        }
+    }
 
     /**
      * Store a newly created expertise in storage.
