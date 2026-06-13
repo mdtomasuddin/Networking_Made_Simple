@@ -26,6 +26,30 @@ class ProfileController
     }
 
     /**
+     * Get the authenticated user's profile.
+     */
+    public function index()
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
+            // Check if user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            // Load relationships
+            $user->load(['contact', 'businessCard', 'paymentLink', 'theme']);
+            // Return success response with user data
+            $resourceData = new ProfileResource($user);
+            return $this->success(200, 'Profile retrieved successfully.', $resourceData);
+        } catch (Exception $e) {
+            // Return error response
+            return $this->error(500, 'Failed to retrieve profile.', ['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
      * Update the authenticated user's profile.
      * @param ProfileUpdateRequest $request
      */
