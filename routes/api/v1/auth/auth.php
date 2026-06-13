@@ -19,7 +19,7 @@ Route::prefix('/v1')->name('api.auth.')->group(function () {
 
         //! Password-related routes
         Route::controller(PasswordController::class)->group(function () {
-            Route::post('/chage-password', 'changePassword');
+            Route::post('/change-password', 'changePassword');
         });
 
         //! OTP-related routes
