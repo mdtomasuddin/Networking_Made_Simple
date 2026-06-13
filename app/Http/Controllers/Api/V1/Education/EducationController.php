@@ -117,5 +117,35 @@ class EducationController
         }
     }
 
+    /**
+     * Remove the specified education from storage.
+     * @param string $id
+     */
+    public function destroy($id)
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
 
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            //find the education by id and user_id
+            $education = Education::where('id', $id)->where('user_id', $user->id)->first();
+            //check if the education exists and belongs to the user
+            if (! $education) {
+                return $this->error(404, 'Education not found.');
+            }
+
+            //delete the education
+            $education->delete();
+            //return success response
+            return $this->success(200, 'Education deleted successfully.');
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to delete education.', ['error' => $e->getMessage()]);
+        }
+    }
 }
