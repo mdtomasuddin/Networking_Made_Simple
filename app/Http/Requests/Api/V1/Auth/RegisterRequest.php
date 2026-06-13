@@ -27,10 +27,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'      => "required|email|unique:users",
-            'first_name' => "required|string",
-            'last_name'  => "required|string",
-            'password'   => "required|confirmed",
+            'email'                => 'required|email|unique:users',
+            'password'             => 'required|confirmed',
+            'terms_and_conditions' => 'nullable|boolean',
         ];
     }
 
@@ -41,15 +40,11 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'first_name.required' => 'First name is required.',
-            'first_name.string'   => 'First name must be a string.',
-            'last_name.required'  => 'Last name is required.',
-            'last_name.string'    => 'Last name must be a string.',
-            'email.required'      => 'Email address is required.',
-            'email.email'         => 'Email address must be a valid email format.',
-            'email.unique'        => 'This email is already taken.',
-            'password.required'   => 'Password is required.',
-            'password.confirmed'  => 'Passwords do not match.',
+            'email.required'                => 'Email address is required.',
+            'email.email'                   => 'Email address must be a valid email format.',
+            'email.unique'                  => 'This email is already taken.',
+            'password.required'             => 'Password is required.',
+            'password.confirmed'            => 'Passwords do not match.',
         ];
     }
 
@@ -58,27 +53,10 @@ class RegisterRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator): never
     {
+        $message = $validator->errors()->first();
 
-        $firstNameErrors = $validator->errors()->get('first_name') ?? null;
-        $lastNameErrors  = $validator->errors()->get('last_name') ?? null;
-        $emailErrors     = $validator->errors()->get('email') ?? null;
-        $passwordErrors  = $validator->errors()->get('password') ?? null;
+        $response = $this->error(422, $message, $validator->errors());
 
-        if ($firstNameErrors) {
-            $message = $firstNameErrors[0];
-        } else if ($lastNameErrors) {
-            $message = $lastNameErrors[0];
-        } else if ($emailErrors) {
-            $message = $emailErrors[0];
-        } else if ($passwordErrors) {
-            $message = $passwordErrors[0];
-        }
-
-        $response = $this->error(
-            422,
-            $message,
-            $validator->errors(),
-        );
         throw new ValidationException($validator, $response);
     }
 }

@@ -15,18 +15,24 @@ return new class extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('handle')->unique();
+            $table->string('phone', 20)->nullable();
+            $table->string('handle')->unique()->nullable();
             $table->string('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('avatar')->nullable();
-            $table->string('phone', 20)->nullable();
-            $table->text('address')->nullable();
+            $table->string('cover_photo')->nullable();
+            $table->string('job_title')->nullable();
+            $table->string('company_name')->nullable();
+            $table->text('location')->nullable();
+            $table->text('bio')->nullable();
             $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
-            $table->boolean('status')->default(true);
+            $table->string('nfc_card_id')->nullable();
+            $table->boolean('terms_and_conditions')->default(false);
+            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

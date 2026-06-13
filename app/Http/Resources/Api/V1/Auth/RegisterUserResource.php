@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources\Api\V1\Auth;
 
 use Illuminate\Http\Request;
@@ -16,17 +15,17 @@ class RegisterUserResource extends JsonResource
     {
         $data = parent::toArray($request);
         $user = [
-            'id' => $data['user']['id'],
-            'first_name' => $data['user']['first_name'],
-            'last_name' => $data['user']['last_name'],
-            'handle' => $data['user']['handle'],
-            'email' => $data['user']['email'],
-            'role' => $data['user']['role']['name'],
+            'id'         => $data['user']['id'] ?? null,
+            'first_name' => $data['user']['first_name'] ?? null,
+            'last_name'  => $data['user']['last_name'] ?? null,
+            'handle'     => $data['user']['handle'] ?? null,
+            'email'      => $data['user']['email'] ?? null,
+            'role'       => $data['user']['role']['name'] ?? null,
         ];
         return [
-            'token' => $data['token'],
-            'verify' => $data['verify'],
-            'user' => $user,
+            'token'  => $data['token'] ?? null,
+            'verify' => $data['verify'] ?? null,
+            'user'   => $user ?? null,
         ];
     }
 }

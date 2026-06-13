@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Repositories\Api\V1\Auth;
 
-use App\Helpers\Helper;
 use App\Interfaces\Api\V1\Auth\UserRepositoryInterface;
-use App\Models\Business;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -24,38 +21,27 @@ class UserRepository implements UserRepositoryInterface
         try {
             // creating user
             $user = User::create([
-                'first_name' => $credentials['first_name'],
-                'last_name'  => $credentials['last_name'],
-                'handle'     => Helper::generateUniqueSlug($credentials['first_name'], 'users', 'handle'),
-                'email'      => $credentials['email'],
-                'password'   => Hash::make($credentials['password']),
-                'role_id'       => $role,
+                'email'                => $credentials['email'],
+                'password'             => Hash::make($credentials['password']),
+                'role_id'              => $role,
+                'terms_and_conditions' => $credentials['terms_and_conditions'] ?? false,
+                'email_verified_at'    => now(),
             ]);
 
-            // creating user profile
-            $user->profile()->create([]);
-
+            // return the created user
             return $user;
         } catch (Exception $e) {
+            // Log the error and rethrow it for higher-level handling
             Log::error('UserRepository::createUser', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
 
-
-
     /**
-     * Attempts to retrieve a user by their email address.
-     *
-     * This method checks the provided credentials and returns the corresponding user.
-     *
-     * @param array $credentials The user's login credentials (email and password).
-     *
-     * @return User|null The user object if found, null otherwise.
-     *
+     * Attempts to retrieve a user by their email address
      * @throws Exception If there is an error during the query.
      */
-    public function login(array $credentials): User|null
+    public function login(array $credentials): User | null
     {
         try {
             return User::where('email', $credentials['email'])->first();

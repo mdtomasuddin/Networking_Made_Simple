@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -8,7 +7,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,8 +30,27 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
+            'id'                   => 'integer',
+            'email_verified_at'    => 'datetime',
+            'password'             => 'hashed',
+            'phone'                => 'string',
+            'first_name'           => 'string',
+            'last_name'            => 'string',
+            'handle'               => 'string',
+            'avatar'               => 'string',
+            'cover_photo'          => 'string',
+            'job_title'            => 'string',
+            'company_name'         => 'string',
+            'location'             => 'string',
+            'bio'                  => 'string',
+            'role_id'              => 'integer',
+            'nfc_card_id'          => 'string',
+            'terms_and_conditions' => 'boolean',
+            'status'               => 'string',
+            'remember_token'       => 'string',
+            'created_at'           => 'datetime',
+            'updated_at'           => 'datetime',
+            'deleted_at'           => 'datetime',
         ];
     }
 
@@ -61,7 +78,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             return asset('assets/backend/images/placeholder/placeholder-4by3.svg');
         }
     }
-
 
     //Accessor for avatar attribute
     public function getAvatarAttribute($url): ?string

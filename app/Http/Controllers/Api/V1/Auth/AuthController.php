@@ -59,7 +59,7 @@ class AuthController extends Controller
 
             $response = $this->authService->login($validatedData);
 
-            return $this->success(200, 'Login Successfully', new LoginResponce($response));
+            return $this->success(200, 'Login Successful', new LoginResponce($response));
         } catch (Exception $e) {
             Log::error('AuthController::login', ['error' => $e->getMessage()]);
             return $this->error(500, 'Server Error', $e->getMessage());
@@ -74,7 +74,7 @@ class AuthController extends Controller
     {
         try {
             $this->authService->logout();
-            return $this->success(200, 'Logout Successfully');
+            return $this->success(200, 'Logout Successful');
         } catch (Exception $e) {
             Log::error('AuthController::logout', ['error' => $e->getMessage()]);
             return $this->error(500, 'Server Error', $e->getMessage());
@@ -92,7 +92,7 @@ class AuthController extends Controller
             return $this->success(200, 'Token Updated', ['token' => $token]);
         } catch (Exception $e) {
             Log::error('AuthController::refresh', ['error' => $e->getMessage()]);
-            return $this->error(500, 'server Error', $e->getMessage());
+            return $this->error(500, 'Server Error', $e->getMessage());
         }
     }
 }
