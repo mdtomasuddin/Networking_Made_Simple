@@ -17,7 +17,6 @@ trait ApiResponse
             'code'      => (int) $code,
             'message'   => $message,
             'data'      => $data,
-            'timestamp' => now()->toIso8601String() . ' GMT' . now()->format('P'),
         ], $code);
     }
 
@@ -31,7 +30,6 @@ trait ApiResponse
             'code'      => (int) $code,
             'message'   => $message,
             'error'     => $error,
-            'timestamp' => now()->toIso8601String() . ' GMT' . now()->format('P'),
         ], $code);
     }
 }

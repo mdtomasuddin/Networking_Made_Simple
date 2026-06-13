@@ -6,8 +6,6 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -67,32 +65,54 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return [];
     }
 
-    public function getImageAttribute($url): string
+    // Accessor for the avatar attribute
+    public function getAvatarAttribute($url): ?string
     {
         if ($url) {
             if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) {
                 return $url;
             } else {
-                return asset('storage/' . $url);
+                return asset('/' . $url);
             }
-        } else {
-            return asset('assets/backend/images/placeholder/placeholder-4by3.svg');
         }
+        return null;
     }
-
-    //Accessor for avatar attribute
-    public function getAvatarAttribute($url): ?string
+    // Accessor for the cover photo attribute
+    public function getCoverPhotoAttribute($url): ?string
     {
-        return $url ?: null;
+        if ($url) {
+            if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) {
+                return $url;
+            } else {
+                return asset('/' . $url);
+            }
+        }
+        return null;
     }
 
     // Relationships and other model methods can be added here
-    public function otps(): HasMany
+    public function otps()
     {
         return $this->hasMany(OTP::class);
     }
-    public function role(): BelongsTo
+    public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+    public function contact()
+    {
+        return $this->hasOne(Contact::class);
+    }
+    public function businessCard()
+    {
+        return $this->hasOne(BusinessCard::class);
+    }
+    public function paymentLink()
+    {
+        return $this->hasOne(PaymentLink::class);
+    }
+    public function theme()
+    {
+        return $this->hasOne(Theme::class);
     }
 }
