@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Category\CategoryController;
+use App\Http\Controllers\Api\V1\Education\EducationController;
 use App\Http\Controllers\Api\V1\Expertise\ExpertiseController;
+use App\Http\Controllers\Api\V1\Recognition\RecognitionController;
 use App\Http\Controllers\Api\V1\User\Profile\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +16,6 @@ Route::apiResource('category', CategoryController::class);
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::apiResource('profile', ProfileController::class);
     Route::apiResource('experience', ExpertiseController::class);
+    Route::apiResource('education', EducationController::class);
+    Route::apiResource('recognition', RecognitionController::class);
 });
