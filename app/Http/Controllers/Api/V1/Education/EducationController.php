@@ -82,5 +82,40 @@ class EducationController
         }
     }
 
- 
+    /**
+     * Update the specified education in storage.
+     * @param EducationRequest $request
+     * @param string $id
+     */
+    public function update(EducationRequest $request, $id)
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
+            // Check if the user is authenticated
+            if (! $user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+
+            //find the education by id and user_id
+            $education = Education::where('id', $id)->where('user_id', $user->id)->first();
+
+            if (! $education) {
+                return $this->error(404, 'Education Not Found');
+            }
+
+            //update the education
+            $validatedData = $request->validated();
+            $education->update($validatedData);
+
+            //create the resource and return the response
+            $data = new EducationResource($education);
+            return $this->success(200, 'Education updated successfully.', $data);
+        } catch (Exception $e) {
+            //handle the exceptionand return an error response.
+            return $this->error(500, 'Failed to update education.', ['error' => $e->getMessage()]);
+        }
+    }
+
+
 }
