@@ -25,24 +25,24 @@ class PasswordChangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "email"    => "required|email|exists:users,email",
-            'password' => "required|confirmed",
+            'current_password' => 'required|current_password',
+            'password'         => 'required|confirmed|min:6',
         ];
     }
 
     /**
-     * Define custom validation messages for the email and password fields.
+     * Define custom validation messages for the fields.
      *
      * @return array The custom error messages for the validation rules.
      */
     public function messages(): array
     {
         return [
-            'email.required'     => 'Email field is required.',
-            'email.email'        => 'Please provide a valid email address.',
-            'email.exists'       => 'This email address is not registered in our system.',
-            'password.required'  => 'Password is required.',
-            'password.confirmed' => 'Passwords do not match.',
+            'current_password.required'         => 'Current password is required.',
+            'current_password.current_password' => 'The provided password does not match your current password.',
+            'password.required'                 => 'New password is required.',
+            'password.confirmed'                => 'New password confirmation does not match.',
+            'password.min'                      => 'Password must be at least 6 characters.',
         ];
     }
 
@@ -52,13 +52,16 @@ class PasswordChangeRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator): never
     {
-        $emailErrors    = $validator->errors()->get('email') ?? null;
-        $passwordErrors = $validator->errors()->get('password') ?? null;
+        $currentPasswordErrors = $validator->errors()->get('current_password') ?? null;
+        $passwordErrors        = $validator->errors()->get('password') ?? null;
 
-        if ($emailErrors) {
-            $message = $emailErrors[0];
+
+        if ($currentPasswordErrors) {
+            $message = $currentPasswordErrors[0];
         } else if ($passwordErrors) {
             $message = $passwordErrors[0];
+        } else {
+            $message = 'Validation failed.';
         }
 
         $response = $this->error(

@@ -17,11 +17,6 @@ Route::prefix('/v1')->name('api.auth.')->group(function () {
             Route::post('/register', 'register');
         });
 
-        //! Password-related routes
-        Route::controller(PasswordController::class)->group(function () {
-            Route::post('/change-password', 'changePassword');
-        });
-
         //! OTP-related routes
         Route::prefix('/forget-password')->name('forgetpassword.')->controller(OTPController::class)->group(function () {
             Route::post('/otp-send', 'otpSend');
@@ -47,6 +42,10 @@ Route::prefix('/v1')->name('api.auth.')->group(function () {
         Route::controller(AuthController::class)->group(function () {
             Route::post('/logout', 'logout')->name('logout');
             Route::post('/refresh', 'refresh')->name('refresh.token');
+        });
+        //! Password-related routes
+        Route::controller(PasswordController::class)->group(function () {
+            Route::post('/change-password', 'changePassword');
         });
         //! OTP-related routes
         Route::controller(OTPController::class)->group(function () {
