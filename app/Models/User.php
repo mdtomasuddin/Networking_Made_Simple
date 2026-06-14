@@ -115,4 +115,16 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->hasOne(Theme::class);
     }
+    public function expertises()
+    {
+        return $this->hasMany(Expertise::class);
+    }
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
+    }
+    public function recognitions()
+    {
+        return $this->hasMany(Recognition::class);
+    }
 }

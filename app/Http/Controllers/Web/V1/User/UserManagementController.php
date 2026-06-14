@@ -61,7 +61,7 @@ class UserManagementController
                 ->addColumn('action', function ($row) {
                     return '
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="#" class="btn btn-sm btn-info-soft" title="View Details">
+                            <a href="' . route('users.show', $row->id) . '" class="btn btn-sm btn-info-soft" title="View Details">
                                <i class="bi bi-eye"></i>
                             </a>
                             <button onclick="deleteRecord(event, ' . $row->id . ')" class="btn btn-sm btn-danger-soft">
@@ -74,6 +74,15 @@ class UserManagementController
         }
         // Render the view
         return view('backend.layouts.user.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $user = User::with(['contact', 'businessCard', 'paymentLink', 'theme', 'expertises', 'educations', 'recognitions'])->findOrFail($id);
+        return view('backend.layouts.user.show', compact('user'));
     }
 
     /**

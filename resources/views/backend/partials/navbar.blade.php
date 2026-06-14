@@ -45,11 +45,11 @@
                 </li>
                 <!--end::UsersLink-->
                 <!--begin::CategoriesLink-->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link {{ Route::is('categories.*') ? 'active' : '' }}"
                         href="{{ route('categories.index') }}">
                         <i data-feather="grid" class="nav-icon me-2 icon-xxs"></i>Categories </a>
-                </li>
+                </li> --}}
                 <!--end::CategoriesLink-->
                 <!--begin::Privacy Policy-->
                 <li class="nav-item">
