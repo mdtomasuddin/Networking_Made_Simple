@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Models\Category;
-use App\Models\Comment;
-use App\Models\ExperienceRoom;
-use App\Models\JobResponsibity;
-use App\Models\ProfessionalInformation;
-use App\Models\Project;
+use App\Models\Expertise;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController
 {
     public function index()
     {
-         return view('backend.layouts.dashboard.index');
+        // Fetch statistics for the dashboard
+        $stats = [
+            'total_users'     => User::count(),
+            'total_expertise' => Expertise::count(),
+            'total_suspended' => User::where('status', 'suspended')->count(),
+        ];
+
+        // Fetch recent users for a quick overview table
+        $userInfo = User::latest()->take(5)->get();
+
+        return view('backend.layouts.dashboard.index', compact('stats', 'userInfo'));
     }
 }

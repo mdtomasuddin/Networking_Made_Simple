@@ -72,9 +72,11 @@
                                                             id="mail_port" name="mail_port"
                                                             value="{{ old('mail_port', env('MAIL_PORT')) }}"
                                                             placeholder="587">
-                                                    @enderror
+                                                        @error('mail_port')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
-                                            </div>
                                             <!--end::FormRow-->
 
                                             <!--begin::FormRow-->

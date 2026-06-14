@@ -33,14 +33,13 @@
 
                 <!--begin::Pages-->
                 <li class="nav-item">
-                    <div class="navbar-heading">Management</div>
+                    <div class="navbar-heading">User Management</div>
                 </li>
                 <!--end::Pages-->
 
                 <!--begin::UsersLink-->
                 <li class="nav-item">
-                    <a class="nav-link {{ Route::is('users.*') ? 'active' : '' }}"
-                        href="{{ route('users.index') }}">
+                    <a class="nav-link {{ Route::is('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
                         <i data-feather="users" class="nav-icon me-2 icon-xxs"></i>Users </a>
                 </li>
                 <!--end::UsersLink-->
@@ -51,6 +50,13 @@
                         <i data-feather="grid" class="nav-icon me-2 icon-xxs"></i>Categories </a>
                 </li> --}}
                 <!--end::CategoriesLink-->
+
+
+                <!--begin::Pages-->
+                <li class="nav-item">
+                    <div class="navbar-heading">Content Management</div>
+                </li>
+                <!--end::Pages-->
                 <!--begin::Privacy Policy-->
                 <li class="nav-item">
                     <a class="nav-link {{ Route::is('privacy-policy.index*') ? 'active' : '' }}"
