@@ -17,7 +17,7 @@ class Content extends Model
     protected $guarded = [];
 
     // The attributes that should be hidden for serialization.
-    protected $hidden = ['created_at', 'deleted_at'];
+    protected $hidden = ['created_at', 'deleted_at', 'type'];
 
     // The attributes that should be cast.
     protected function casts(): array
