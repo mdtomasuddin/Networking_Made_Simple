@@ -95,4 +95,33 @@ class AuthController extends Controller
             return $this->error(500, 'Server Error', $e->getMessage());
         }
     }
+
+    /**
+     * Delete the authenticated user's account.
+     * @return JsonResponse
+     */
+    public function deleteAccount(): JsonResponse
+    {
+        try {
+            // Get the authenticated user
+            $user = auth()->user();
+
+            // Check if the user is authenticated
+            if (!$user) {
+                return $this->error(401, 'Unauthenticated user.');
+            }
+            // Optionally, logout the user before deleting to invalidate the token
+            $this->authService->logout();
+
+            // Delete the user
+            $user->delete();
+
+            // Return a success response
+            return $this->success(200, 'Account deleted successfully.');
+        } catch (Exception $e) {
+            // Log the error for debugging purposes
+            Log::error('AuthController::deleteAccount', ['error' => $e->getMessage()]);
+            return $this->error(500, 'Server Error', $e->getMessage());
+        }
+    }
 }

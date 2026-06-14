@@ -42,6 +42,7 @@ Route::prefix('/v1')->name('api.auth.')->group(function () {
         Route::controller(AuthController::class)->group(function () {
             Route::post('/logout', 'logout')->name('logout');
             Route::post('/refresh', 'refresh')->name('refresh.token');
+            Route::delete('/delete-account', 'deleteAccount')->name('delete.account');
         });
         //! Password-related routes
         Route::controller(PasswordController::class)->group(function () {
