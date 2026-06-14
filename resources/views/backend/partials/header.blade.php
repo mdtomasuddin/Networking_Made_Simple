@@ -146,12 +146,12 @@
                         <!--begin::MenuItems-->
                         <ul class="list-unstyled">
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('profile.index') }}">
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.profile.index') }}">
                                     <i class="me-2 icon-xxs dropdown-item-icon" data-feather="user"></i>Profile
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('profile.password') }}">
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.profile.password') }}">
                                     <i class="me-2 icon-xxs dropdown-item-icon" data-feather="lock"></i>Change Password
                                 </a>
                             </li>

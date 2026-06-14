@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Api\v1;
+namespace App\Services\Api\V1;
 
 use App\Helpers\Helper;
 use App\Models\BusinessCard;

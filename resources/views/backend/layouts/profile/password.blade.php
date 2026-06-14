@@ -5,32 +5,46 @@
 @endsection
 
 @section('content')
+    <!--begin::AppContent-->
     <div id="app-content">
+        <!--begin::AppContentArea-->
         <div class="app-content-area">
+            <!--begin::Container-->
             <div class="container-fluid">
+                <!--begin::Row-->
                 <div class="row">
+                    <!--begin::Col-->
                     <div class="col-12">
-                        <div class="mb-4">
+                        <!--begin::PageHeader-->
                             <h2 class="h3 mb-0">Change Password</h2>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li><a href="{{ route('profile.index') }}">Profile</a></li>
+                                    <li><a href="{{ route('admin.profile.index') }}">Profile</a></li>
                                     <li> / Change Password</li>
                                 </ol>
                             </nav>
                         </div>
+                        <!--end::PageHeader-->
                     </div>
+                    <!--end::Col-->
                 </div>
+                <!--end::Row-->
 
+                <!--begin::Row-->
                 <div class="row g-4 d-flex justify-content-center">
                     {{-- Right Side: Update Form --}}
+                    <!--begin::Col-->
                     <div class="col-xl-6 col-lg-8">
+                        <!--begin::Card-->
                         <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-white py-3">
+                            <!--begin::CardHeader-->
                                 <h5 class="mb-0">Security Settings</h5>
                             </div>
+                            <!--end::CardHeader-->
+                            <!--begin::CardBody-->
                             <div class="card-body p-4">
-                                <form action="{{ route('profile.password.update') }}" method="POST">
+                                <!--begin::Form-->
+                                <form action="{{ route('admin.profile.password.update') }}" method="POST">
                                     @csrf
 
                                     <div class="row g-3">
@@ -75,13 +89,21 @@
                                         <button type="submit" class="btn btn-primary px-5">Change Password</button>
                                     </div>
                                 </form>
+                                <!--end::Form-->
                             </div>
+                            <!--end::CardBody-->
                         </div>
+                        <!--end::Card-->
                     </div>
+                    <!--end::Col-->
                 </div>
+                <!--end::Row-->
             </div>
+            <!--end::Container-->
         </div>
+        <!--end::AppContentArea-->
     </div>
+    <!--end::AppContent-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     {{-- JavaScript for Image Preview --}}

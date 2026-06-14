@@ -5,11 +5,17 @@
 @endsection
 
 @section('content')
+    <!--begin::AppContent-->
     <div id="app-content">
+        <!--begin::AppContentArea-->
         <div class="app-content-area">
+            <!--begin::Container-->
             <div class="container-fluid">
+                <!--begin::Row-->
                 <div class="row">
+                    <!--begin::Col-->
                     <div class="col-12">
+                        <!--begin::PageHeader-->
                         <div class="mb-4">
                             <h2 class="h3 mb-0">Adminstrator Profile Settings</h2>
                             <nav aria-label="breadcrumb">
@@ -18,13 +24,20 @@
                                 </ol>
                             </nav>
                         </div>
+                        <!--end::PageHeader-->
                     </div>
+                    <!--end::Col-->
                 </div>
+                <!--end::Row-->
 
+                <!--begin::Row-->
                 <div class="row g-4">
                     {{-- Left Side: Profile Overview --}}
+                    <!--begin::Col-->
                     <div class="col-xl-4 col-lg-5">
+                        <!--begin::Card-->
                         <div class="card border-0 shadow-sm text-center p-4">
+                            <!--begin::CardBody-->
                             <div class="card-body">
                                 <div class="position-relative d-inline-block mb-3">
                                     <img id="profile-display"
@@ -68,23 +81,32 @@
                                                 <span class="text-muted small fw-bold text-uppercase">Address</span>
                                             </div>
                                             <div class="col-8">
-                                                <span class="text-dark small fw-semibold ps-2">{{ $user->address ?? 'N/A' }}</span>
+                                                <span class="text-dark small fw-semibold ps-2">{{ $user->location ?? 'N/A' }}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!--end::CardBody-->
                         </div>
+                        <!--end::Card-->
                     </div>
+                    <!--end::Col-->
 
                     {{-- Right Side: Update Form --}}
+                    <!--begin::Col-->
                     <div class="col-xl-8 col-lg-7">
+                        <!--begin::Card-->
                         <div class="card border-0 shadow-sm">
+                            <!--begin::CardHeader-->
                             <div class="card-header bg-white py-3">
                                 <h5 class="mb-0">Edit Personal Information</h5>
                             </div>
+                            <!--end::CardHeader-->
+                            <!--begin::CardBody-->
                             <div class="card-body p-4">
-                                <form action="{{ route('profile.update') }}" method="POST"
+                                <!--begin::Form-->
+                                <form action="{{ route('admin.profile.update') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
 
@@ -142,10 +164,10 @@
 
                                         {{-- Address --}}
                                         <div class="col-12 mb-3">
-                                            <label class="form-label fw-bold">Address</label>
-                                            <input type="text" name="address"
-                                                class="form-control @error('address') is-invalid @enderror"
-                                                value="{{ old('address', $user->address) }}" placeholder="Enter address">
+                                            <label class="form-label fw-bold">Address / Location</label>
+                                            <input type="text" name="location"
+                                                class="form-control @error('location') is-invalid @enderror"
+                                                value="{{ old('location', $user->location) }}" placeholder="Enter address / location">
 
                                         </div>
 
@@ -153,13 +175,21 @@
                                         <button type="submit" class="btn btn-primary px-5">Update Profile</button>
                                     </div>
                                 </form>
+                                <!--end::Form-->
                             </div>
+                            <!--end::CardBody-->
                         </div>
+                        <!--end::Card-->
                     </div>
+                    <!--end::Col-->
                 </div>
+                <!--end::Row-->
             </div>
+            <!--end::Container-->
         </div>
+        <!--end::AppContentArea-->
     </div>
+    <!--end::AppContent-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     {{-- JavaScript for Image Preview --}}
     <script>

@@ -21,10 +21,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 // User Profile Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [UserController::class, 'index'])->name('profile.index');
-    Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
-    Route::get('/profile/password', [UserController::class, 'password'])->name('profile.password');
-    Route::post('/profile/password', [UserController::class, 'updatePassword'])->name('profile.password.update');
+    Route::get('/admin-profile', [UserController::class, 'index'])->name('admin.profile.index');
+    Route::post('/admin-profile/update', [UserController::class, 'updateProfile'])->name('admin.profile.update');
+    Route::get('/admin-profile/password', [UserController::class, 'password'])->name('admin.profile.password');
+    Route::post('/admin-profile/password', [UserController::class, 'updatePassword'])->name('admin.profile.password.update');
 });
 
 // categories
