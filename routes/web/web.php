@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\V1\Category\CategoryController;
 use App\Http\Controllers\Web\V1\User\UserController;
+use App\Http\Controllers\Web\V1\User\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,3 +30,7 @@ Route::middleware(['auth'])->group(function () {
 // categories
 Route::post('/categories/status/{id}', [CategoryController::class, 'status'])->name('categories.status');
 Route::resource('/categories', CategoryController::class);
+
+//! user management
+Route::post('/users/status/{id}', [UserManagementController::class, 'status'])->name('users.status');
+Route::resource('users', UserManagementController::class);

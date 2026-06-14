@@ -37,6 +37,13 @@
                 </li>
                 <!--end::Pages-->
 
+                <!--begin::UsersLink-->
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('users.*') ? 'active' : '' }}"
+                        href="{{ route('users.index') }}">
+                        <i data-feather="users" class="nav-icon me-2 icon-xxs"></i>Users </a>
+                </li>
+                <!--end::UsersLink-->
                 <!--begin::CategoriesLink-->
                 <li class="nav-item">
                     <a class="nav-link {{ Route::is('categories.*') ? 'active' : '' }}"
