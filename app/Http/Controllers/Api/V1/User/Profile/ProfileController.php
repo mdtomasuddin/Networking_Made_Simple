@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\User\Profile;
 
-use App\Http\Requests\Api\v1\Profile\ProfileUpdateRequest;
+use App\Http\Requests\Api\V1\Profile\ProfileUpdateRequest;
 use App\Http\Resources\Api\V1\User\ProfileResource;
-use App\Services\Api\v1\ProfileService;
+use App\Services\Api\V1\ProfileService;
 use App\Traits\V1\ApiResponse;
 use Exception;
 
